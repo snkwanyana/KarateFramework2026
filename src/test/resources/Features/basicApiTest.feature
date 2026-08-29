@@ -1,28 +1,31 @@
 Feature: Basic API Test with Karate
 
+  Background:
+    * url 'https://jsonplaceholder.typicode.com'
+
   Scenario: Validate GET request response
-    Given url 'https://jsonplaceholder.typicode.com/posts/1'
+    Given path '/posts/1'
     When method GET
     Then status 200
     And match response contains { "id": 1 ,"title": "#string", "body": "#string" }
     And match response.userId == 1
 
   Scenario: Validate POST request
-  Given url 'https://jsonplaceholder.typicode.com/posts'
+    Given path '/posts'
     And request { title: 'Karate API', body: 'Testing POST request', userId: 1 }
     When method POST
     Then status 201
     And match response contains { "id": "#number", "title": "Karate API", "body": "Testing POST request", "userId": 1 }
 
   Scenario: Validate PUT request
-    Given url 'https://jsonplaceholder.typicode.com/posts/1'
+    Given path '/posts/1'
     And request { id: 1, title: 'Updated Title', body: 'Updated Body', userId: 1 }
     When method PUT
     Then status 200
     And match response.title == 'Updated Title'
 
   Scenario: Validate DELETE request
-    Given url 'https://jsonplaceholder.typicode.com/posts/1'
+    Given path '/posts/1'
     When method DELETE
     Then status 200
 
